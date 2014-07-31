@@ -79,7 +79,10 @@ add_action('save_post', 'em_tbc_save_post', 1, 2);
  */
 function em_tbc_event_output_placeholder($result, $EM_Event, $placeholder, $target) {
 
-  if( get_post_meta( $EM_Event->post_id, '_event_date_tbc', true) ) {
+  $event_date_tbc = get_post_meta( $EM_Event->post_id, '_event_date_tbc', true);
+  $event_date_tbc = apply_filters( 'get_event_date_tbc_meta_setting', $event_date_tbc, $EM_Event );
+
+  if( $event_date_tbc ) {
 
     switch ( $placeholder ) {
       case '#_EVENTDATES':
