@@ -74,4 +74,27 @@ function em_tbc_save_post($post_id, $post) {
 add_action('save_post', 'em_tbc_save_post', 1, 2);
 
 
-// @TODO Hook into event display date placeholder
+/**
+ * Hook into EM_Event output placeholder substitution and modify time and date output if TBC option set
+ */
+function em_tbc_event_output_placeholder($result, $EM_Event, $placeholder, $target) {
+
+  if( get_post_meta( $EM_Event->post_id, '_event_date_tbc', true) ) {
+
+    switch ( $placeholder ) {
+      case '#_EVENTDATES':
+        $result = __('To Be Confirmed');
+        break;
+      case '#_EVENTTIMES':
+      case '#_24HSTARTTIME':
+      case '#_24HENDTIME':
+      case '#_12HSTARTTIME':
+      case '#_12HENDTIME':
+        $result = '';
+        break;
+    }
+  }
+
+  return $result;
+}
+add_filter('em_event_output_placeholder', 'em_tbc_event_output_placeholder', 10, 4);
