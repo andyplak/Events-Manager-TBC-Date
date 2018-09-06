@@ -3,7 +3,7 @@
  * Plugin Name: Events Manager - Event Date TBC
  * Plugin URI: http://www.andyplace.co.uk
  * Description: Plugin for Events Manager that allows an event to have a date displayed as "To Be Confirmed"
- * Version: 1.0
+ * Version: 1.1
  * Author: Andy Place
  * Author URI: http://www.andyplace.co.uk
  * License: GPL2
@@ -13,10 +13,10 @@
  * Modify Event post admin date metabox.
  * Need to de-register and re-register with our mods as there are no hooks that allow us to modify it
  */
-function em_tbc_modify_meta_box() {
-  global $pagenow, $post;
+function em_tbc_modify_meta_box( $post ) {
+  global $pagenow;
 
-  if($post->post_type == EM_POST_TYPE_EVENT && ($pagenow == 'post.php' || $pagenow == 'post-new.php') ){
+  if( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) {
     // Remove the existing one
     remove_meta_box('em-event-when', EM_POST_TYPE_EVENT, 'side');
 
@@ -24,7 +24,7 @@ function em_tbc_modify_meta_box() {
     add_meta_box('em-event-when', __('When','dbem'), 'em_tbc_meta_box_date', EM_POST_TYPE_EVENT, 'side', 'high');
   }
 }
-add_action( 'add_meta_boxes', 'em_tbc_modify_meta_box', 50);
+add_action( 'add_meta_boxes_event', 'em_tbc_modify_meta_box', 20, 1);
 
 
 /**
